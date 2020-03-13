@@ -86,7 +86,7 @@ public class MqttClient implements PubsubInterface
      */
     public void close()
     {
-        for (MqttSubscription subscription: subscriptions.values())
+        for (MqttSubscription subscription : subscriptions.values())
             subscription.close();
     }
 
