@@ -15,6 +15,8 @@ public class CalculatorClient
 {
     public static void main(String args[])
     {
+        mainThread = Thread.currentThread();
+
         try
         {
             for (String arg : args)
@@ -36,8 +38,10 @@ public class CalculatorClient
             System.out.println("Welcome to Zserio Calculator Paho MQTT Pub/Sub Client example!");
             System.out.print("Creating client and subscriptions (terminate with ^C) ...");
 
+            installShutdownHook();
+
             // instance of Zserio Pub/Sub Paho MQTT client to be used as an PubsubInterface
-            final MqttClient mqttClient = new MqttClient(host, port);
+            mqttClient = new MqttClient(host, port);
 
             // calculator client uses the Paho MQTT client backend
             final zserio.pubsub.paho.mqtt.examples.calculator.gen.calculator.CalculatorClient client =
@@ -70,12 +74,12 @@ public class CalculatorClient
 
             final Scanner scanner = new Scanner(System.in);
 
-            while (true)
+            while (true && !mainThread.isInterrupted())
             {
                 System.out.println(
                         (powerOfTwoSubscribed ? "p" : "") + (squareRootOfSubscribed ? "s" : "") + "> ");
 
-                if (!scanner.hasNextLine())
+                if (!hasNextLine())
                     break;
 
                 final String input = scanner.nextLine();
@@ -126,13 +130,64 @@ public class CalculatorClient
 
                 publishRequest(client, input);
             }
-
-            mqttClient.close();
         }
         catch (Exception e)
         {
             System.err.println("CalculatorClient error: " + e.getMessage());
         }
+
+        if (mqttClient != null)
+            mqttClient.close();
+
+        synchronized(lock)
+        {
+            running = false;
+            lock.notify();
+        }
+    }
+
+    // hack to use instead of Scanner.hasNextLine since it is not interruptible
+    private static boolean hasNextLine()
+    {
+        try
+        {
+            while (System.in.available() == 0)
+            {
+                Thread.currentThread().sleep(100);
+            }
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void installShutdownHook()
+    {
+        Runtime.getRuntime().addShutdownHook(
+            new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    mainThread.interrupt();
+                    try
+                    {
+                        synchronized(lock)
+                        {
+                            if (running)
+                            {
+                                lock.wait();
+                            }
+                        }
+                    }
+                    catch (InterruptedException e)
+                    {}
+                }
+            }
+        );
     }
 
     private static void printHelp()
@@ -165,4 +220,9 @@ public class CalculatorClient
 
         client.publishRequest(request);
     }
+
+    private static Thread mainThread = null;
+    private static MqttClient mqttClient = null;
+    private static final Object lock = new Object();
+    private static boolean running = true;
 }
