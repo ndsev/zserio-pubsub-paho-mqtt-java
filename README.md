@@ -4,12 +4,8 @@ Sample implementation of Zserio Pub/Sub Paho MQTT backend in **Java**.
 
 ## Prerequisites
 
-1. Install [Mosquitto](https://mosquitto.org) according to
-[official instructions](https://mosquitto.org/download/). Mosquitto is the message broker which implements
-MQTT protocol.
-   * Check that mosquitto broker is running
-     > On Ubuntu check `systemctl status mosquitto`.
-
+1. [Mosquitto](https://mosquitto.org) message broker running.
+   > On Ubuntu check `systemctl status mosquitto`.
 2. Java SDK
 3. Zserio Java runtime library (`zserio_runtime.jar`)
 4. Zserio compiler (`zserio.jar`)
