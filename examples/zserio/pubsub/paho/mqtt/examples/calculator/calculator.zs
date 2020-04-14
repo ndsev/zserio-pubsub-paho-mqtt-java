@@ -17,22 +17,22 @@ struct Double
 
 pubsub CalculatorClient
 {
-    publish("calculator/request") I32 request;
+    publish topic("calculator/request") I32 request;
 
-    subscribe("calculator/power_of_two") U64 powerOfTwo;
-    subscribe("calculator/square_root_of") Double squareRootOf;
+    subscribe topic("calculator/power_of_two") U64 powerOfTwo;
+    subscribe topic("calculator/square_root_of") Double squareRootOf;
 };
 
 pubsub PowerOfTwoProvider
 {
-    subscribe("calculator/request") I32 request;
+    subscribe topic("calculator/request") I32 request;
 
-    publish("calculator/power_of_two") U64 powerOfTwo;
+    publish topic("calculator/power_of_two") U64 powerOfTwo;
 };
 
 pubsub SquareRootOfProvider
 {
-    subscribe("calculator/request") I32 request;
+    subscribe topic("calculator/request") I32 request;
 
-    publish("calculator/square_root_of") Double squareRootOf;
+    publish topic("calculator/square_root_of") Double squareRootOf;
 };
