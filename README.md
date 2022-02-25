@@ -7,32 +7,46 @@ Sample implementation of Zserio Pub/Sub Paho MQTT backend in **Java**.
 1. [Mosquitto](https://mosquitto.org) message broker running.
    > On Ubuntu check `systemctl status mosquitto`.
 2. Java SDK
-3. Zserio Java runtime library (`zserio_runtime.jar`)
-4. Zserio compiler (`zserio.jar`)
-
-> Zserio prerequisites are included in this repo in 3rdparty folder.
+3. Apache Maven
 
 ## Usage
 
 ### Calculator Example
 
 ```bash
-mkdir build
-# generate service using Zserio
-java -jar 3rdparty/zserio.jar \
-     -src examples/zserio/pubsub/paho/mqtt/examples/calculator calculator.zs -java build \
-     -setTopLevelPackage zserio.pubsub.paho.mqtt.examples.calculator.gen
+# download the latest zserio version
+mvn dependency:copy -Dmaven.repo.local="build/download" \
+        -Dartifact=io.github.ndsev:zserio:LATEST \
+        -DoutputDirectory="build" -Dmdep.stripVersion=true
 
-javac -d build -cp 3rdparty/zserio_runtime.jar:3rdparty/org.eclipse.paho.client.mqttv3-1.2.2.jar \
-      src/zserio/pubsub/paho/mqtt/*.java \
-      examples/zserio/pubsub/paho/mqtt/examples/calculator/*.java \
-      build/zserio/pubsub/paho/mqtt/examples/calculator/gen/calculator/*.java
-java -cp 3rdparty/zserio_runtime.jar:3rdparty/org.eclipse.paho.client.mqttv3-1.2.2.jar:build \
-     zserio.pubsub.paho.mqtt.examples.calculator.PowerOfTwoProvider &
-java -cp 3rdparty/zserio_runtime.jar:3rdparty/org.eclipse.paho.client.mqttv3-1.2.2.jar:build \
-     zserio.pubsub.paho.mqtt.examples.calculator.SquareRootOfProvider &
-java -cp 3rdparty/zserio_runtime.jar:3rdparty/org.eclipse.paho.client.mqttv3-1.2.2.jar:build \
-     zserio.pubsub.paho.mqtt.examples.calculator.CalculatorClient
+# download the latest zserio runtime version
+mvn dependency:copy -Dmaven.repo.local="build/download" \
+        -Dartifact=io.github.ndsev:zserio-runtime:LATEST \
+        -DoutputDirectory="build" -Dmdep.stripVersion=true
+
+# download paho client
+mvn dependency:copy -Dmaven.repo.local="build/download" \
+        -Dartifact=org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2 \
+        -DoutputDirectory="build" -Dmdep.stripVersion=true
+
+# generate service using Zserio
+java -jar build/zserio.jar \
+     -src examples/paho/mqtt/examples/calculator calculator.zs -java build \
+     -setTopLevelPackage paho.mqtt.examples.calculator.gen
+
+# compile example
+javac -d build -cp build/zserio-runtime.jar:build/org.eclipse.paho.client.mqttv3.jar \
+      src/paho/mqtt/*.java \
+      examples/paho/mqtt/examples/calculator/*.java \
+      build/paho/mqtt/examples/calculator/gen/calculator/*.java
+
+# run example
+java -cp build/zserio-runtime.jar:build/org.eclipse.paho.client.mqttv3.jar:build \
+     paho.mqtt.examples.calculator.PowerOfTwoProvider &
+java -cp build/zserio-runtime.jar:build/org.eclipse.paho.client.mqttv3.jar:build \
+     paho.mqtt.examples.calculator.SquareRootOfProvider &
+java -cp build/zserio-runtime.jar:build/org.eclipse.paho.client.mqttv3.jar:build \
+     paho.mqtt.examples.calculator.CalculatorClient
 ```
 
 > For more understandable output run both providers and client in a separate terminal.
