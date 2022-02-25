@@ -88,7 +88,8 @@ public class CalculatorClient
 
                 if (input.charAt(0) == 'q')
                 {
-                    System.out.println("Quit.");
+                    System.out.println("Quitting.");
+                    Thread.sleep(1000); // wait a little bit for a potential responses
                     break;
                 }
 
