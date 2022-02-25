@@ -29,7 +29,7 @@ mvn dependency:copy -Dmaven.repo.local="build/download" \
         -Dartifact=org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2 \
         -DoutputDirectory="build" -Dmdep.stripVersion=true
 
-# generate service using Zserio
+# generate example using Zserio
 java -jar build/zserio.jar \
      -src examples/paho/mqtt/examples/calculator calculator.zs -java build \
      -setTopLevelPackage paho.mqtt.examples.calculator.gen
