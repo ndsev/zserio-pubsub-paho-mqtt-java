@@ -1,4 +1,4 @@
-package paho.mqtt;
+package zserio.pubsub.paho.mqtt;
 
 import java.util.UUID;
 

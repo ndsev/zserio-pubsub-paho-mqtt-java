@@ -1,4 +1,4 @@
-package paho.mqtt.examples.calculator;
+package zserio.pubsub.paho.mqtt.examples.calculator;
 
 import java.math.BigInteger;
 import java.lang.Math;
@@ -7,7 +7,7 @@ import java.lang.Math;
 import paho.mqtt.examples.calculator.gen.calculator.I32;
 import paho.mqtt.examples.calculator.gen.calculator.Double;
 
-import paho.mqtt.MqttClient;
+import zserio.pubsub.paho.mqtt.MqttClient;
 
 import zserio.runtime.pubsub.PubsubCallback;
 
