@@ -1,5 +1,12 @@
 # Zserio Pub/Sub Paho MQTT Backend
 
+[![](https://github.com/ndsev/zserio-pubsub-paho-mqtt-java/actions/workflows/build_linux.yml/badge.svg)](https://github.com/ndsev/zserio-pubsub-paho-mqtt-java/actions/workflows/build_linux.yml)
+[![](https://img.shields.io/github/watchers/ndsev/zserio-pubsub-paho-mqtt-java.svg)](https://GitHub.com/ndsev/zserio-pubsub-paho-mqtt-java/watchers)
+[![](https://img.shields.io/github/forks/ndsev/zserio-pubsub-paho-mqtt-java.svg)](https://GitHub.com/ndsev/zserio-pubsub-paho-mqtt-java/network/members)
+[![](https://img.shields.io/github/stars/ndsev/zserio-pubsub-paho-mqtt-java.svg?color=yellow)](https://GitHub.com/ndsev/zserio-pubsub-paho-mqtt-java/stargazers)
+
+--------
+
 Sample implementation of Zserio Pub/Sub Paho MQTT backend in **Java**.
 
 ## Prerequisites
