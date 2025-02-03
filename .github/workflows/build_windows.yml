@@ -82,7 +82,7 @@ jobs:
       shell: bash
 
     - name: Archive Zserio Java Pub/Sub Paho Mqtt classes
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: zserio-pubsub-paho-mqtt-java-${{matrix.os}}
         path: |
